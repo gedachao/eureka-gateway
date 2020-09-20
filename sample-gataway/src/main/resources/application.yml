@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: sample-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true   # 启用服务发现
+      routes:
+        - id: time_route
+          uri: lb://provider-client   # lb表示使用lb协议
+          predicates:   # 如下的日期可以使用 ZonedDateTime zonedDateTime = ZonedDateTime.now();获取
+            - Before=2020-09-21T16:19:14.642+08:00[GMT+08:00]
+
+
+server:
+  port: 9500
+eureka:
+  instance:
+    instance-id: sample-gateway
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8000/eureka
